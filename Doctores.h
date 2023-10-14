@@ -119,7 +119,7 @@ void RegistrarDoctor()
 
 }
 void MostrarDoctores(){
-
+//ajsa
 }
 void EliminarDoctor(){
 
