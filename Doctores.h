@@ -17,7 +17,6 @@
 
 //#include "MenuPrincipal.h"
 //Declaracion de funciones
-
 void RegistrarDoctor();
 void MostrarDoctores();
 void EliminarDoctor();
@@ -26,10 +25,11 @@ void MenuPrincipalDoctores();
 struct Doctor {
 std::string Nombre_Doctor;
 std::string Especialidad;
-std::tm Horario_Entrada;
-std::tm Horario_Salida;
+std::chrono::system_clock::time_point Horario_Entrada;
+std::chrono::system_clock::time_point Horario_Salida;
 
 };
+
 bool EsperarEnterParaContinuar() {
     std::cout << "Presiona enter para seguir...";
     char c = getchar(); // Leer un carácter, incluyendo el Enter
@@ -80,7 +80,7 @@ void RegistrarDoctor()
             std::cout << "No puede dejar el espacio vacio" <<std::endl;
             std::cin.ignore();
             std::getline(std::cin ,doctorr.Nombre_Doctor);
-        }
+    }
     //Aqui Ingresamos la especialidad del doctor
     std::cout << "Ingrese la especialidad del doctor: "<<std::endl;
     std::cin.ignore();
@@ -89,38 +89,80 @@ void RegistrarDoctor()
             std::cout << "No puede dejar el espacio vacio"<<std::endl;
             
             doctorr.Especialidad = ValidarPalabra("Volver a ingresar");
-        }
+    }
     // Solicitar y validar el horario de entrada del doctor
     std::cout << "Ingrese el horario de entrada del doctor (HH:MM): ";
     std::string Horario_EntradaStr;
     std::getline(std::cin,Horario_EntradaStr);
-    while (!ValidarHora(Horario_EntradaStr)) {
-        std::cout << "Formato de hora incorrecto. Use HH:MM: ";
-        std::getline(std::cin, Horario_EntradaStr);
+    try{
+        std::tm tm ={};
+        std::istringstream timestreamHE(Horario_EntradaStr);
+        timestreamHE >> std::get_time(&tm, "%H:%M");
+        if (timestreamHE.fail())
+        {
+        throw std::runtime_error("Formato de hora no es correcto");
+        }
+        doctorr.Horario_Entrada = std::chrono::system_clock::from_time_t(std::mktime(&tm));    
+        
+    }catch(const std::exception& e){
+            std::cerr <<"Error: "<< e.what() << std::endl;
     }
 
     // Solicitar y validar el horario de salida del doctor
-    std::cout << "Ingrese el horario de salida del doctor (HH:MM): ";
-    std::string Horario_SalidaStr;
-    std::getline(std::cin, Horario_SalidaStr);
-    while (!ValidarHora(Horario_SalidaStr)) {
-        std::cout << "Formato de hora incorrecto. Use HH:MM: ";
+        std::cout << "Ingrese el horario de salida del doctor (HH:MM): ";
+        std::string Horario_SalidaStr;
         std::getline(std::cin, Horario_SalidaStr);
+    try{
+        std::tm tm ={};
+        std::istringstream timestreamHS(Horario_SalidaStr);
+        timestreamHS >> std::get_time(&tm, "%H:%M");
+        if (timestreamHS.fail())
+        {
+        throw std::runtime_error("Formato de hora no es correcto");
+        }
+        doctorr.Horario_Entrada = std::chrono::system_clock::from_time_t(std::mktime(&tm));    
+        
+    }catch(const std::exception& e){
+            std::cerr <<"Error: "<< e.what() << std::endl;
+    }
         // Agregar el nuevo doctor al vector de doctores
         agendadoctores.push_back(doctorr);
     
         std::cout << "Doctor registrado exitosamente." << std::endl;
-    }
-   
-
-    if (EsperarEnterParaContinuar()) {
+        if (validarRespuesta()){
         MenuPrincipalDoctores();
+        
+        }else{
+        RegistrarDoctor();
+        }
+
+}
+void MostrarDoctores() {
+    if (agendadoctores.empty()) {
+        std::cout << "No hay doctores registrados." << std::endl;
+    } else {
+        std::cout << "=== Lista de Doctores ===" << std::endl;
+        for (size_t i = 0; i < agendadoctores.size(); ++i) {
+            const Doctor& doctorr = agendadoctores[i];
+            std::time_t HorarioEntradas = std::chrono::system_clock::to_time_t(doctorr.Horario_Entrada);
+            std::time_t HorarioSalidas = std::chrono::system_clock::to_time_t(doctorr.Horario_Salida);
+
+            std::cout << "Doctor " << i + 1 << ":" << std::endl;
+            std::cout << "Nombre: " << agendadoctores[i].Nombre_Doctor << std::endl;
+            std::cout << "Especialidad: " << agendadoctores[i].Especialidad << std::endl;
+            std::cout << "Horario de Entrada: " << std::put_time(std::localtime(&HorarioEntradas), "%H:%M") << std::endl;
+            std::cout << "Horario de Salida: " << std::put_time(std::localtime(&HorarioSalidas), "%H:%M") << std::endl;
+            std::cout << "-----------------------------------" << std::endl;
+        }
     }
 
+    if (validarRespuesta()) {
+        MenuPrincipalDoctores();
+    } else {
+        MostrarDoctores();
+    }
 }
-void MostrarDoctores(){
 
-}
 void EliminarDoctor(){
 
 }
