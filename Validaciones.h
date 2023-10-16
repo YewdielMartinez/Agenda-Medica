@@ -100,5 +100,11 @@ bool ValidarHora(const std::string& hora) {
     ss >> hh >> colon >> mm;
     return ss && colon == ':' && hh >= 0 && hh <= 23 && mm >= 0 && mm <= 59;
 }
-
+std::string timePointToString(const std::chrono::time_point<std::chrono::system_clock>& tp) {
+    auto tt = std::chrono::system_clock::to_time_t(tp);
+    auto localTime = std::localtime(&tt);
+    char buffer[10];
+    std::strftime(buffer, sizeof(buffer), "%H:%M", localTime);
+    return std::string(buffer);
+}
 #endif

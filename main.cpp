@@ -14,6 +14,7 @@
 #include "Validaciones.h"
 
 
+
 int main (){
     MenuPrincipalDoctores();
     return 0;

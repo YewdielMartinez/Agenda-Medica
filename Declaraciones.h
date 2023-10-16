@@ -1,5 +1,5 @@
-#ifndef DECLARACIONES.H
-#define DECLARACIONES.H
+#ifndef DECLARACIONES_H
+#define DECLARACIONES_H
 #include <iostream>
 #include <conio.h>//Libreria con funciones de control de entrada y salida
 #include <string.h> // Libreria para hacer todas mayusculas
@@ -27,11 +27,12 @@ void MenuPrincipalDoctores();
 struct Doctor {
 std::string Nombre_Doctor;
 std::string Especialidad;
-std::tm Horario_Entrada;
-std::tm Horario_Salida;
-
+std::chrono::system_clock::time_point Horario_Entrada;
+std::chrono::system_clock::time_point Horario_Salida;
 };
-std::vector<Doctor> agendadoctores;
 Doctor doctorr;
+const char* format = "%H:%M";
+std::vector<Doctor> agendadoctores;
+
 
 #endif 

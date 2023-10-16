@@ -8,6 +8,6 @@ struct pacientes{
     std::string Direccion_Pacientes; 
     int Numero_TelefonicoPacientes;
 
-}
+};
 
 #endif
