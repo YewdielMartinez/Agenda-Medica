@@ -12,10 +12,12 @@
 #include <sstream>
 #include <algorithm> 
 #include <fstream>
-#include <cstdio>  // Incluir la librería para getchar()
+#include "Doctores.h"
 #include "Validaciones.h"
+#include "Pacientes.h"
+#include "Citas.h"
 #include "Declaraciones.h"
-//#include "MenuPrincipal.h"
+#include "MenuPrincipal.h"
 
 
 
@@ -38,15 +40,15 @@ void MenuPrincipalDoctores(){
             case 2:MostrarDoctores ();break;
             case 3:EliminarDoctor();break;
             case 4:EditarDoctor();break;
-            //case 5:MenuPrincipal();break;
-            case 5: std::cout << "Saliendo del programa. ¡Hasta luego!" << std::endl; 
+            case 5:MenuPrincipal();break;
+            case 6: std::cout << "Saliendo del programa. ¡Hasta luego!" << std::endl; 
             return ;
             break;
         
             default: std:: cout <<"Elige una opcion del 1 al 6";break;
 
             }   
-        } while (opcion!=5);
+        } while (opcion!=6);
 }
 
 

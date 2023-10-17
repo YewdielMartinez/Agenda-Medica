@@ -13,6 +13,14 @@
 #include <algorithm> 
 #include <fstream>
 #include "Doctores.h"
+#include "Validaciones.h"
+#include "Pacientes.h"
+#include "Citas.h"
+#include "Declaraciones.h"
+#include "MenuPrincipal.h"
+
+
+
 
 double pedirNumeroM() {
     double numero{ 0 };
@@ -52,6 +60,23 @@ double pedirNumero()
     }
   } while (true);
 
+}
+double pedirNumeroMC() {
+    double numero{ 0 };
+    bool inputCorrecto = false;
+
+    do {
+        std::cin >> numero;
+        if (std::cin.fail() || numero < 1 || numero > 7) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Por favor, ingrese un número válido del 1 al 7: ";
+        } else {
+            inputCorrecto = true;
+        }
+    } while (!inputCorrecto);
+
+    return numero;
 }
 bool validarRespuesta() {
     std::string respuesta;
@@ -106,5 +131,35 @@ std::string timePointToString(const std::chrono::time_point<std::chrono::system_
     char buffer[10];
     std::strftime(buffer, sizeof(buffer), "%H:%M", localTime);
     return std::string(buffer);
+}
+bool ValidarFechaHora(const std::string& fechaHoraStr, const char* format) {
+    std::tm tm = {};
+    std::istringstream ss(fechaHoraStr);
+    ss >> std::get_time(&tm, format);
+    if (ss.fail()) {
+        return false;
+    }
+    std::time_t time = std::mktime(&tm);
+    if (time == -1) {
+        return false;
+    }
+    return true;
+}
+void MostrarDoctoresDisponibles() {
+    std::cout << "=== Lista de Doctores Disponibles ===" << std::endl;
+    for (const auto& doctor : agendadoctores) {
+        std::cout << "Nombre: " << doctor.Nombre_Doctor << std::endl;
+        std::cout << "Especialidad: " << doctor.Especialidad << std::endl;
+        std::cout << "------------------------------------" << std::endl;
+    }
+}
+
+void MostrarPacientesDisponibles() {
+    std::cout << "=== Lista de Pacientes Disponibles ===" << std::endl;
+    for (const auto& paciente : agendapacientes) {
+        std::cout << "Nombre: " << paciente.Nombre_Pacientes << std::endl;
+        std::cout << "Identificación: " << paciente.Identificacion_Paciente << std::endl;
+        std::cout << "------------------------------------" << std::endl;
+    }
 }
 #endif

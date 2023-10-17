@@ -13,20 +13,17 @@
 #include <algorithm> 
 #include <fstream>
 #include "Doctores.h"
-#include "Pacientes.h"
 #include "Validaciones.h"
+#include "Pacientes.h"
+#include "Citas.h"
+#include "Declaraciones.h"
 //Declaracion de funciones de doctores
 void RegistrarDoctor();
 void MostrarDoctores();
 void EliminarDoctor();
 void EditarDoctor();
 void MenuPrincipalDoctores();
-//Declaracion de funciones de pacientes
-void RegistrarPacientes();
-void MostrarPacientes();
-void EliminarPacientes();
-void EditarPacientes();
-void MenuPrincipalPacientes();
+
 
 
 struct Doctor {
@@ -38,12 +35,5 @@ std::chrono::system_clock::time_point Horario_Salida;
 Doctor doctorr;
 const char* format = "%H:%M";
 std::vector<Doctor> agendadoctores;
-struct Pacientes{
-    std::string Nombre_Pacientes;
-    int Edad_Pacientes;
-    std::string Direccion_Pacientes; 
-    int Numero_TelefonicoPacientes;
-
-};
 
 #endif 
