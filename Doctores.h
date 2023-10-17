@@ -18,7 +18,7 @@
 //#include "MenuPrincipal.h"
 
 
-//Creamos el vector con la estructura de Doctor llamado agendadoctores
+
 void MenuPrincipalDoctores(){
         int opcion {0};//Declaramos una variable local para el MenuPrincipalDoctores
         std::cout << "=== Gestión de Doctores ===" << std::endl;
@@ -96,7 +96,7 @@ void RegistrarDoctor()
         }
         doctorr.Horario_Entrada = std::chrono::system_clock::from_time_t(std::mktime(&tmEntrada));
         break;
-
+        
         }catch(const std::exception& e){
             std::cerr << "Error: "<< e.what() << std::endl;
         }
@@ -204,12 +204,59 @@ void EditarDoctor(){
 
     if (it != agendadoctores.end()) {
         Doctor& doctor = *it;
-        // Aquí puedes permitir al usuario editar los campos del doctor
-        // Por ejemplo:
+
+        // Permite al usuario editar los campos del doctor
         std::cout << "Ingrese el nuevo nombre del doctor: ";
         std::getline(std::cin, doctor.Nombre_Doctor);
         std::cout << "Ingrese la nueva especialidad del doctor: ";
         std::getline(std::cin, doctor.Especialidad);
+
+        // Solicitar y validar el nuevo horario de entrada del doctor
+        std::string Horario_EntradaStr;
+        const char* format = "%H:%M";
+        do {
+            std::cout << "Ingrese el nuevo horario de entrada del doctor (HH:MM): ";
+            std::getline(std::cin, Horario_EntradaStr);
+            while (!ValidarHora(Horario_EntradaStr)) {
+                std::cout << "Formato de hora incorrecto. Use HH:MM: ";
+                std::getline(std::cin, Horario_EntradaStr);
+            }
+            try {
+                std::tm tmEntrada = {};
+                std::istringstream entradaStream(Horario_EntradaStr);
+                entradaStream >> std::get_time(&tmEntrada, format);
+                if (entradaStream.fail()) {
+                    throw std::runtime_error("Error formato de hora no valido");
+                }
+                doctor.Horario_Entrada = std::chrono::system_clock::from_time_t(std::mktime(&tmEntrada));
+                break;
+            } catch (const std::exception& e) {
+                std::cerr << "Error: " << e.what() << std::endl;
+            }
+        } while (true);
+
+        // Solicitar y validar el nuevo horario de salida del doctor
+        std::string Horario_SalidaStr;
+        do {
+            std::cout << "Ingrese el nuevo horario de Salida del doctor (HH:MM): ";
+            std::getline(std::cin, Horario_SalidaStr);
+            while (!ValidarHora(Horario_SalidaStr)) {
+                std::cout << "Formato de hora incorrecto. Use HH:MM: ";
+                std::getline(std::cin, Horario_SalidaStr);
+            }
+            try {
+                std::tm tmSalida = {};
+                std::istringstream SalidaStream(Horario_SalidaStr);
+                SalidaStream >> std::get_time(&tmSalida, format);
+                if (SalidaStream.fail()) {
+                    throw std::runtime_error("Error formato de hora no valido");
+                }
+                doctor.Horario_Salida = std::chrono::system_clock::from_time_t(std::mktime(&tmSalida));
+                break;
+            } catch (const std::exception& e) {
+                std::cerr << "Error: " << e.what() << std::endl;
+            }
+        } while (true);
 
         std::cout << "Doctor editado correctamente." << std::endl;
     } else {
