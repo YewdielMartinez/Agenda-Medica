@@ -12,14 +12,18 @@
 #include <sstream>
 #include <algorithm> 
 #include <fstream>
+#include <random>
 #include "Doctores.h"
-#include "Validaciones.h"
 #include "Pacientes.h"
 #include "Citas.h"
 #include "Declaraciones.h"
-#include "MenuPrincipal.h"
 
+#include "Validaciones.h"
 
+double pedirNumeroM();
+double pedirNumero();
+double pedirNumeroMC();
+bool validarRespuesta();
 
 
 double pedirNumeroM() {
@@ -145,21 +149,5 @@ bool ValidarFechaHora(const std::string& fechaHoraStr, const char* format) {
     }
     return true;
 }
-void MostrarDoctoresDisponibles() {
-    std::cout << "=== Lista de Doctores Disponibles ===" << std::endl;
-    for (const auto& doctor : agendadoctores) {
-        std::cout << "Nombre: " << doctor.Nombre_Doctor << std::endl;
-        std::cout << "Especialidad: " << doctor.Especialidad << std::endl;
-        std::cout << "------------------------------------" << std::endl;
-    }
-}
 
-void MostrarPacientesDisponibles() {
-    std::cout << "=== Lista de Pacientes Disponibles ===" << std::endl;
-    for (const auto& paciente : agendapacientes) {
-        std::cout << "Nombre: " << paciente.Nombre_Pacientes << std::endl;
-        std::cout << "Identificación: " << paciente.Identificacion_Paciente << std::endl;
-        std::cout << "------------------------------------" << std::endl;
-    }
-}
 #endif

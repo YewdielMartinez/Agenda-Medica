@@ -12,12 +12,14 @@
 #include <sstream>
 #include <algorithm> 
 #include <fstream>
+#include <random>
 #include "Doctores.h"
-#include "Validaciones.h"
 #include "Pacientes.h"
 #include "Citas.h"
 #include "Declaraciones.h"
-#include "MenuPrincipal.h"
+
+#include "Validaciones.h"
+
 
 //Declaracion de funciones de pacientes
 void RegistrarPaciente();
@@ -25,15 +27,7 @@ void MostrarPacientes();
 void EliminarPacientes();
 void EditarPacientes();
 void MenuPrincipalPacientes();
-struct Pacientes{
-    std::string Nombre_Pacientes;
-    int Edad_Pacientes;
-    std::string Direccion_Pacientes; 
-    std::string Numero_TelefonicoPacientes;
-    int Identificacion_Paciente;
 
-};
-std::vector<Pacientes> agendapacientes;
 void MenuPrincipalPacientes(){
         int opcion {0};//Declaramos una variable local para el MenuPrincipalPacientes
         std::cout << "=== Gestión de Pacientes ===" << std::endl;

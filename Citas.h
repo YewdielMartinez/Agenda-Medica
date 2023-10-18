@@ -14,11 +14,12 @@
 #include <fstream>
 #include <random>
 #include "Doctores.h"
-#include "Validaciones.h"
 #include "Pacientes.h"
 #include "Citas.h"
 #include "Declaraciones.h"
-#include "MenuPrincipal.h"
+
+#include "Validaciones.h"
+
 //Definicion de funciones 
 void MostrarDoctoresDisponibles();
 void MostrarPacientesDisponibles();
@@ -29,7 +30,23 @@ void EditarCita();
 void EliminarCita();
 void MostrarCitas();
 void MostrarCitasMasCercanas();
+void MostrarDoctoresDisponibles() {
+    std::cout << "=== Lista de Doctores Disponibles ===" << std::endl;
+    for (const auto& doctor : agendadoctores) {
+        std::cout << "Nombre: " << doctor.Nombre_Doctor << std::endl;
+        std::cout << "Especialidad: " << doctor.Especialidad << std::endl;
+        std::cout << "------------------------------------" << std::endl;
+    }
+}
 
+void MostrarPacientesDisponibles() {
+    std::cout << "=== Lista de Pacientes Disponibles ===" << std::endl;
+    for (const auto& paciente : agendapacientes) {
+        std::cout << "Nombre: " << paciente.Nombre_Pacientes << std::endl;
+        std::cout << "Identificación: " << paciente.Identificacion_Paciente << std::endl;
+        std::cout << "------------------------------------" << std::endl;
+    }
+}
 
 
 
@@ -91,6 +108,7 @@ void AgregarCita() {
     MostrarDoctoresDisponibles();
     std::cout << "Ingrese el nombre del doctor: ";
     std::string nombreDoctor;
+    std::cin.ignore();
     std::getline(std::cin, nombreDoctor);
 
     // Verificar si el doctor existe
@@ -158,6 +176,7 @@ void AgregarCita() {
     // Agregar la cita al vector de citas
     agendacitas.push_back(nuevaCita);
     std::cout << "Cita programada exitosamente." << std::endl;
+    MenuPrincipalCitas();
 }
 void EditarCita() {
     if (agendacitas.empty()) {
