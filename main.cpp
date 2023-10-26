@@ -15,7 +15,7 @@
 #include "Pacientes.h"
 #include "Citas.h"
 #include "Declaraciones.h"
-
+#include "Consultorios.h"
 #include "Validaciones.h"
 
 void MenuPrincipal();
@@ -41,9 +41,9 @@ void MenuPrincipal(){
             case 1:MenuPrincipalDoctores();break;
             case 2:MenuPrincipalPacientes ();break;
             case 3:MenuPrincipalCitas();break;
-            //case 4:EditarCita();break;
+            case 4:MenuPrincipalConsultorios();break;
             //case 5:MostrarCitasMasCercanas();break;
-            case 4: std::cout << "Saliendo del programa. ¡Hasta luego!" << std::endl; 
+            case 5: std::cout << "Saliendo del programa. ¡Hasta luego!" << std::endl; 
             
             break;
         

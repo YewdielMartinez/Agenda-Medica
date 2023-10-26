@@ -17,7 +17,7 @@
 #include "Pacientes.h"
 #include "Citas.h"
 #include "Declaraciones.h"
-
+#include "Consultorios.h"
 #include "Validaciones.h"
 
 

@@ -17,7 +17,7 @@
 #include "Pacientes.h"
 #include "Citas.h"
 #include "Declaraciones.h"
-
+#include "Consultorios.h"
 #include "Validaciones.h"
 
 //Definicion de funciones 
@@ -78,8 +78,9 @@ void MenuPrincipalCitas(){
         std::cout << "2. Mostrar Citas registradas" << std::endl;
         std::cout << "3. Eliminar Citas" << std::endl;
         std::cout << "4. Editar Citas" << std::endl;
-        std::cout << "5. Regresar al menu principal del programa. " << std::endl;
-        std::cout << "6. Cerrar Programa. " << std::endl;
+        std::cout << "5. Mostrar Citas mas Cercanas" << std::endl;
+        std::cout << "6. Regresar al menu principal del programa. " << std::endl;
+        std::cout << "7. Cerrar Programa. " << std::endl;
 
         opcion = pedirNumeroMC();//Aqui hace la llamada a la funcion para que pueda validar el numero
         //Aqui hacemos que un switch case para elegir la opcion y llame a su respectiva funcion
@@ -230,10 +231,17 @@ void EditarCita() {
         } while (true);
 
         std::cout << "Cita editada correctamente." << std::endl;
+        MenuPrincipalCitas();
     } else {
         std::cout << "Cita no encontrada. No se puede editar." << std::endl;
+        MenuPrincipalCitas();
+    
     }
+
+
 }
+
+
 void EliminarCita() {
     if (agendacitas.empty()) {
         std::cout << "No hay citas registradas para eliminar." << std::endl;
@@ -264,7 +272,10 @@ void EliminarCita() {
     } else {
         std::cout << "Cita no encontrada. No se puede eliminar." << std::endl;
     }
+
 }
+
+
 void MostrarCitas() {
     if (agendacitas.empty()) {
         std::cout << "No hay citas registradas." << std::endl;

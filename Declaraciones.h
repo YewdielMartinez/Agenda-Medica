@@ -17,7 +17,7 @@
 #include "Pacientes.h"
 #include "Citas.h"
 #include "Declaraciones.h"
-
+#include "Consultorios.h"
 #include "Validaciones.h"
 
 struct Doctor {
@@ -26,6 +26,7 @@ std::string Especialidad;
 std::string diasTrabajoStr;
 std::chrono::system_clock::time_point Horario_Entrada;
 std::chrono::system_clock::time_point Horario_Salida;
+
 };
 Doctor doctorr;
 const char* format = "%H:%M";

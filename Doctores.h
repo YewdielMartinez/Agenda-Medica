@@ -17,7 +17,6 @@
 #include "Pacientes.h"
 #include "Citas.h"
 #include "Declaraciones.h"
-
 #include "Validaciones.h"
 
 
@@ -268,7 +267,7 @@ void EditarDoctor(){
     } else {
         std::cout << "Doctor no encontrado. No se puede editar." << std::endl;
     }
-    
+
     if (validarRespuesta()) {
         MenuPrincipalDoctores();
     } else {
