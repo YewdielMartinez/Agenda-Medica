@@ -21,14 +21,17 @@
 
 void MenuPrincipalConsultorios();
 void RegistrarConsultorios();
-
+void MenuPrincipal();
 void EditarConsultorios();
 void EliminarConsultorios();
 void MostrarConsultorios();
+void AsignarConsultorios();
 struct Consultorio {
     int NumeroConsultorio;
     
 };
+
+
 
 void MenuPrincipalConsultorios(){
         int opcion {0};//Declaramos una variable local para el MenuPrincipalPacientes
@@ -47,7 +50,7 @@ void MenuPrincipalConsultorios(){
      
             switch(opcion){
             case 1:RegistrarConsultorios();break;
-            //case 2:AsigarConsultorios ();break;
+            case 2:AsignarConsultorios ();break;
             case 3:EditarConsultorios();break;
             case 4:EliminarConsultorios();break;
             case 5:MostrarConsultorios();break;
@@ -62,6 +65,9 @@ void MenuPrincipalConsultorios(){
         } while (opcion!=7);
 }
 std::vector<Consultorio> agendaconsultorios;
+
+
+
 
 void RegistrarConsultorios() {
     Consultorio consultorio;

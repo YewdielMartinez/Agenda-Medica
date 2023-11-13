@@ -30,7 +30,8 @@ void EditarCita();
 void EliminarCita();
 void MostrarCitas();
 void MostrarCitasMasCercanas();
-void MostrarDoctoresDisponibles() {
+void MenuPrincipal();
+void MostrarDoctoresDisponibles() {//Funcion para mostrar los doctores disponibles
     std::cout << "=== Lista de Doctores Disponibles ===" << std::endl;
     for (const auto& doctor : agendadoctores) {
         std::cout << "Nombre: " << doctor.Nombre_Doctor << std::endl;
@@ -39,7 +40,7 @@ void MostrarDoctoresDisponibles() {
     }
 }
 
-void MostrarPacientesDisponibles() {
+void MostrarPacientesDisponibles() {//Funcion para mostrar los pacientes disponibles
     std::cout << "=== Lista de Pacientes Disponibles ===" << std::endl;
     for (const auto& paciente : agendapacientes) {
         std::cout << "Nombre: " << paciente.Nombre_Pacientes << std::endl;
@@ -50,16 +51,17 @@ void MostrarPacientesDisponibles() {
 
 
 
-struct Cita {
+struct Cita {//Estructura para las citas
     
     int Identificador;
     std::string Nombre_Doctor;
     std::string Nombre_Paciente;
     std::chrono::system_clock::time_point Fecha_Hora;
+    int NumeroConsultorio;
 };
-std::vector<Cita> agendacitas;
+std::vector<Cita> agendacitas;//Declaracion de vector con respecto a la estructura cita
 
-int GenerarIdentificador() {
+int GenerarIdentificador() {//Funcion para generar un identificador random para la cita
     static std::random_device rd;
     static std::mt19937 generator(rd());
     static std::uniform_int_distribution<int> distribution(1000, 9999); // Rango de identificadores
@@ -72,6 +74,7 @@ int GenerarIdentificador() {
 
 
 void MenuPrincipalCitas(){
+        LimpiarPantalla();
         int opcion {0};//Declaramos una variable local para el MenuPrincipalPacientes
         std::cout << "=== Gestión de Citas ===" << std::endl;
         std::cout << "1. Registrar nueva Citas" << std::endl;
@@ -94,7 +97,6 @@ void MenuPrincipalCitas(){
             case 5:MostrarCitasMasCercanas();break;
             case 6:MenuPrincipal();break;
             case 7: std::cout << "Saliendo del programa. ¡Hasta luego!" << std::endl; 
-            return ;
             break;
         
             default: std:: cout <<"Elige una opcion del 1 al 7";break;
@@ -104,23 +106,25 @@ void MenuPrincipalCitas(){
 }
 void AgregarCita() {
     Cita nuevaCita;
-    nuevaCita.Identificador = GenerarIdentificador();
+    nuevaCita.Identificador = GenerarIdentificador();//Aqui genera el identificador y lo guarda en el vector
     std::cout << "Seleccione el doctor para la cita:" << std::endl;
-    MostrarDoctoresDisponibles();
+    MostrarDoctoresDisponibles();//Muestra los doctores disponibles para poder agendar la cita
     std::cout << "Ingrese el nombre del doctor: ";
     std::string nombreDoctor;
     std::cin.ignore();
     std::getline(std::cin, nombreDoctor);
 
     // Verificar si el doctor existe
-    auto itDoctor = std::find_if(agendadoctores.begin(), agendadoctores.end(),
+    auto itDoctor = std::find_if(agendadoctores.begin(), agendadoctores.end(),//Utiliza la funcion find_if para poder buscar el elemento en el rango de agendadoctores al inficio y al final
                                   [&nombreDoctor](const Doctor& doctor) {
                                       return doctor.Nombre_Doctor == nombreDoctor;
                                   });
 
     if (itDoctor == agendadoctores.end()) {
         std::cout << "Doctor no encontrado. La cita no puede ser programada." << std::endl;
-        return;
+        
+        std::cout << "Doctor no encontrado. La cita no puede ser programada." << std::endl;
+        MenuPrincipalCitas();
     }
 
     nuevaCita.Nombre_Doctor = nombreDoctor;
@@ -173,11 +177,33 @@ void AgregarCita() {
         std::cout << "La cita no coincide con el horario del doctor. La cita no puede ser programada." << std::endl;
         return;
     }
+   // Verificar si el consultorio está ocupado por otro doctor en ese momento
+    bool consultorioOcupado = false;
+    for (const auto& cita : agendacitas) {
+        if (cita.Fecha_Hora == nuevaCita.Fecha_Hora && cita.NumeroConsultorio == doctor.NumeroConsultorio) {
+            consultorioOcupado = true;
+            break;
+        }
+    }
 
+    if (consultorioOcupado) {
+        std::cout << "El consultorio está ocupado por otro doctor en ese momento. La cita no puede ser programada." << std::endl;
+        return;
+    }
+     // Verificar si el doctor ya tiene otra cita programada en el mismo consultorio en la misma fecha y hora
+    for (const auto& cita : agendacitas) {
+        if (cita.Fecha_Hora == nuevaCita.Fecha_Hora && cita.NumeroConsultorio == doctor.NumeroConsultorio &&
+            cita.Nombre_Doctor == nuevaCita.Nombre_Doctor) {
+            std::cout << "El doctor ya tiene otra cita programada en el mismo consultorio en la misma fecha y hora. La cita no puede ser programada." << std::endl;
+            return;
+        }
+    }
     // Agregar la cita al vector de citas
     agendacitas.push_back(nuevaCita);
     std::cout << "Cita programada exitosamente." << std::endl;
+    LimpiarPantalla();
     MenuPrincipalCitas();
+
 }
 void EditarCita() {
     if (agendacitas.empty()) {
@@ -229,7 +255,7 @@ void EditarCita() {
                 std::cerr << "Error: " << e.what() << std::endl;
             }
         } while (true);
-
+        
         std::cout << "Cita editada correctamente." << std::endl;
         MenuPrincipalCitas();
     } else {

@@ -13,6 +13,7 @@
 #include <algorithm> 
 #include <fstream>
 #include <random>
+#include <cstdlib> 
 #include "Doctores.h"
 #include "Pacientes.h"
 #include "Citas.h"
@@ -24,8 +25,26 @@ double pedirNumeroM();
 double pedirNumero();
 double pedirNumeroMC();
 bool validarRespuesta();
+void LimpiarPantalla() {
+    system("cls"); // En sistemas Windows
+}
+double pedirNumeroMM() {
+    double numero{ 0 };
+    bool inputCorrecto = false;
 
+    do {
+        std::cin >> numero;
+        if (std::cin.fail() || numero < 1 || numero > 5) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Por favor, ingrese un número válido del 1 al 5: ";
+        } else {
+            inputCorrecto = true;
+        }
+    } while (!inputCorrecto);
 
+    return numero;
+}
 double pedirNumeroM() {
     double numero{ 0 };
     bool inputCorrecto = false;

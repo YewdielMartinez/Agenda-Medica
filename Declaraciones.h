@@ -19,14 +19,16 @@
 #include "Declaraciones.h"
 #include "Consultorios.h"
 #include "Validaciones.h"
-
+std::vector<std::string> dias_semana = {"Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"};
+std::vector<bool> dias_trabajo(7, false);
 struct Doctor {
 std::string Nombre_Doctor;
 std::string Especialidad;
 std::string diasTrabajoStr;
 std::chrono::system_clock::time_point Horario_Entrada;
 std::chrono::system_clock::time_point Horario_Salida;
-
+std::vector<bool> Dias_Trabajo;
+int NumeroConsultorio;
 };
 Doctor doctorr;
 const char* format = "%H:%M";
