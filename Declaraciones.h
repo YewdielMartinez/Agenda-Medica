@@ -38,7 +38,7 @@ struct Pacientes{
     std::string Nombre_Pacientes;
     int Edad_Pacientes;
     std::string Direccion_Pacientes; 
-    std::string Numero_TelefonicoPacientes;
+    double Numero_TelefonicoPacientes;
     int Identificacion_Paciente;
 
 };

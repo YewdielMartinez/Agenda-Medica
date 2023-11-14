@@ -168,5 +168,34 @@ bool ValidarFechaHora(const std::string& fechaHoraStr, const char* format) {
     }
     return true;
 }
+bool tieneEspaciosVacios(const std::string& cadena) {
+    return std::find_if(cadena.begin(), cadena.end(), [](char c) {
+        return std::isspace(static_cast<unsigned char>(c)); // Comprueba si el carácter es un espacio en blanco
+    }) != cadena.end();
+}
+void cerrarPrograma() {
+    std::cout << "Cerrando el programa. Adiós.\n";
+    exit(0); // Puedes usar otro valor si prefieres un código de salida diferente
+}
 
+double pedirNumeroTelefono() {
+    double numero{ 0 };
+
+    do {
+        if (std::cin >> numero && std::cin.peek() == '\n') {
+            // Verificar que el número tenga 10 dígitos
+            if (std::to_string(static_cast<long long>(numero)).length() == 10) {
+                std::cin.ignore(); // Limpiar el buffer después de obtener el número
+                return numero;
+            } else {
+                std::cout << "El número de teléfono debe tener exactamente 10 dígitos. Inténtalo de nuevo." << std::endl;
+            }
+        } else {
+            // Limpiar el cin y sus errores para pedir otra vez el número
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Ingresa solamente un número válido por favor." << std::endl;
+        }
+    } while (true);
+}
 #endif

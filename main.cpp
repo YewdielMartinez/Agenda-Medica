@@ -50,7 +50,7 @@ void MenuPrincipal(){
             LimpiarPantalla();
             break;
             case 5: std::cout << "Saliendo del programa. ¡Hasta luego!" << std::endl; 
-
+            cerrarPrograma();
             break;
         
             default: std:: cout <<"Elige una opcion del 1 al 5";break;

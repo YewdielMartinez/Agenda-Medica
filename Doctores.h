@@ -42,7 +42,7 @@ void MenuPrincipalDoctores(){
             case 4:EditarDoctor();break;
             case 5:MenuPrincipal();break;
             case 6: std::cout << "Saliendo del programa. ¡Hasta luego!" << std::endl; 
-            return ;
+            cerrarPrograma();
             break;
         
             default: std:: cout <<"Elige una opcion del 1 al 6";break;
@@ -60,26 +60,44 @@ void RegistrarDoctor()
     std::string Fecha_Horario_EntradaStr, Fecha_Horario_SalidaStr;
     const char* format = "%H:%M";
    //Aqui ingresamos el nombre del doctor
-    std::cout << "Ingrese el nombre del doctor: "<<std::endl;
+    do
+    {
+        std::cout << "Ingrese el nombre del doctor: "<<std::endl;
     
         std::cin.ignore();
         doctorr.Nombre_Doctor = ValidarPalabra("Por Favor Ingresar el nombre");//Aqui validamos que el nombre del doctor sea palabra y no ponga numero
-        while(doctorr.Nombre_Doctor.empty()){
-            std::cout << "No puede dejar el espacio vacio" <<std::endl;
-            std::cin.ignore();
-            std::getline(std::cin ,doctorr.Nombre_Doctor);
-        }
-    //Aqui Ingresamos la especialidad del doctor
-    std::cout << "Ingrese la especialidad del doctor: "<<std::endl;
-    
+        
+        if (tieneEspaciosVacios(doctorr.Nombre_Doctor)) {
+            std::cout << "La cadena no debe contener espacios vacíos.Intenta de nuevo" << std::endl;
 
-        doctorr.Especialidad = ValidarPalabra("Favor de ingresar la especialidad");//aqui validamos que la especialidad no vayan numeros
-        while(doctorr.Especialidad.empty()){
-                std::cout << "No puede dejar el espacio vacio"<<std::endl;
+        } 
+        while(doctorr.Nombre_Doctor.empty()){
+            std::cout << "No puede dejar el espacio vacio"<<std::endl;
             
-                doctorr.Especialidad = ValidarPalabra("Volver a ingresar");
-            
+            doctorr.Nombre_Doctor = ValidarPalabra("Volver a ingresar");
         }
+    }while(tieneEspaciosVacios(doctorr.Nombre_Doctor));
+    std::cout << "El nombre se agrego correctamente" << std::endl;
+
+    do
+    {
+        std::cout << "Ingrese la especialidad  del doctor: "<<std::endl;
+    
+        std::cin.ignore();
+        doctorr.Especialidad = ValidarPalabra("Por Favor Ingresar el nombre");//Aqui validamos que el nombre del doctor sea palabra y no ponga numero
+        
+        if (tieneEspaciosVacios(doctorr.Especialidad)) {
+            std::cout << "La cadena no debe contener espacios vacíos.Intenta de nuevo" << std::endl;
+
+        } 
+        while(doctorr.Especialidad.empty()){
+            std::cout << "No puede dejar el espacio vacio"<<std::endl;
+            
+            doctorr.Especialidad = ValidarPalabra("Volver a ingresar");
+        }
+    }while(tieneEspaciosVacios(doctorr.Especialidad));
+    std::cout << "La especialidad se agrego correctamente." << std::endl;
+
     // Preguntar qué días va a trabajar el doctor
         
 
@@ -160,6 +178,11 @@ if (validarRespuesta()){
         }
 
 }
+
+
+
+
+
 void MostrarDoctores() {
     if (agendadoctores.empty()) {
         std::cout << "No hay doctores registrados." << std::endl;
@@ -192,17 +215,40 @@ void MostrarDoctores() {
     }
 }
 
+
+
+
+
+
+
+
 void EliminarDoctor(){
     if (agendadoctores.empty()) {
         std::cout << "No hay doctores registrados para eliminar." << std::endl;
-        return;
+        MenuPrincipalDoctores();
     }
 
     std::string nombre;
+ do
+    {
     std::cout << "Ingrese el nombre del doctor que desea eliminar: ";
-    std::cin.ignore();
-    std::getline(std::cin, nombre);
+    
+        std::cin.ignore();
+        nombre= ValidarPalabra("Por Favor Ingresar el nombre");//Aqui validamos que el nombre del doctor sea palabra y no ponga numero
+        
+        if (tieneEspaciosVacios(nombre)) {
+            std::cout << "La cadena no debe contener espacios vacíos.Intenta de nuevo" << std::endl;
 
+        } 
+        while(nombre.empty()){
+            std::cout << "No puede dejar el espacio vacio"<<std::endl;
+            
+           nombre= ValidarPalabra("Volver a ingresar");
+        }
+    }while(tieneEspaciosVacios(nombre));
+    std::cout << "La cadena es válida." << std::endl;
+    
+    
     auto it = std::find_if(agendadoctores.begin(), agendadoctores.end(),
                            [&nombre](const Doctor& doctor) {
                                return doctor.Nombre_Doctor == nombre;
@@ -223,31 +269,68 @@ void EliminarDoctor(){
         EliminarDoctor();
     }
 }
-void EditarDoctor(){
-     if (agendadoctores.empty()) {
+void EditarDoctor() {
+    if (agendadoctores.empty()) {
         std::cout << "No hay doctores registrados para editar." << std::endl;
+        MenuPrincipalDoctores();
         return;
     }
 
     std::string nombre;
-    std::cout << "Ingrese el nombre del doctor que desea editar: ";
-    std::cin.ignore();
-    std::getline(std::cin, nombre);
+    do {
+        std::cout << "Ingrese el nombre del doctor que desea editar: ";
+
+        std::cin.ignore();
+        nombre = ValidarPalabra("Por Favor Ingresar el nombre");
+
+        if (tieneEspaciosVacios(nombre)) {
+            std::cout << "La cadena no debe contener espacios vacíos. Intente de nuevo." << std::endl;
+        } else if (nombre.empty()) {
+            std::cout << "No puede dejar el espacio vacío." << std::endl;
+        }
+    } while (tieneEspaciosVacios(nombre) || nombre.empty());
 
     auto it = std::find_if(agendadoctores.begin(), agendadoctores.end(),
-                           [&nombre](const Doctor& doctor) {
+                           [&nombre](const Doctor &doctor) {
                                return doctor.Nombre_Doctor == nombre;
                            });
 
     if (it != agendadoctores.end()) {
-        Doctor& doctor = *it;
+        Doctor &doctor = *it;
 
-        // Permite al usuario editar los campos del doctor
-        std::cout << "Ingrese el nuevo nombre del doctor: ";
-        std::getline(std::cin, doctor.Nombre_Doctor);
-        std::cout << "Ingrese la nueva especialidad del doctor: ";
-        std::getline(std::cin, doctor.Especialidad);
-         // Editar los días de trabajo del doctor
+        // Editar el nombre del doctor
+        std::string nuevoNombre;
+        do {
+            std::cout << "Ingrese el nuevo nombre del doctor: ";
+            std::cin.ignore();
+            nuevoNombre = ValidarPalabra("Por Favor Ingresar el nombre");
+
+            if (tieneEspaciosVacios(nuevoNombre)) {
+                std::cout << "La cadena no debe contener espacios vacíos. Intente de nuevo." << std::endl;
+            } else if (nuevoNombre.empty()) {
+                std::cout << "No puede dejar el espacio vacío." << std::endl;
+            }
+        } while (tieneEspaciosVacios(nuevoNombre) || nuevoNombre.empty());
+
+        doctor.Nombre_Doctor = nuevoNombre;
+
+        // Editar la especialidad del doctor
+        std::string nuevaEspecialidad;
+        do {
+            std::cout << "Ingrese la nueva especialidad del doctor: ";
+            std::cin.ignore();
+            nuevaEspecialidad = ValidarPalabra("Por Favor Ingresar la especialidad");
+
+            if (tieneEspaciosVacios(nuevaEspecialidad)) {
+                std::cout << "La cadena no debe contener espacios vacíos. Intente de nuevo." << std::endl;
+            } else if (nuevaEspecialidad.empty()) {
+                std::cout << "No puede dejar el espacio vacío." << std::endl;
+            }
+        } while (tieneEspaciosVacios(nuevaEspecialidad) || nuevaEspecialidad.empty());
+
+        doctor.Especialidad = nuevaEspecialidad;
+
+        // Editar los días de trabajo del doctor
         std::cout << "¿En qué días de la semana va a trabajar el doctor?" << std::endl;
         for (size_t i = 0; i < dias_semana.size(); ++i) {
             char respuesta;
@@ -256,63 +339,66 @@ void EditarDoctor(){
                 std::cin >> respuesta;
                 if (respuesta == 'S' || respuesta == 's') {
                     doctor.Dias_Trabajo[i] = true;
-                    break; // Salir del bucle si la entrada es válida
+                    break;
                 } else if (respuesta == 'N' || respuesta == 'n') {
                     doctor.Dias_Trabajo[i] = false;
-                    break; // Salir del bucle si la entrada es válida
+                    break;
                 } else {
                     std::cout << "Por favor, ingrese S para sí o N para no." << std::endl;
                 }
             } while (true);
         }
-        // Solicitar y validar el nuevo horario de entrada del doctor
-        std::string Horario_EntradaStr;
-        const char* format = "%H:%M";
+
+        // Editar el horario de entrada del doctor
+        std::string nuevoHorarioEntradaStr;
+        const char *format = "%H:%M";
         do {
             std::cout << "Ingrese el nuevo horario de entrada del doctor (HH:MM): ";
-            std::getline(std::cin, Horario_EntradaStr);
-            while (!ValidarFechaHora(Horario_EntradaStr, format)) {
+            std::cin.ignore();
+            std::getline(std::cin, nuevoHorarioEntradaStr);
+            while (!ValidarHora(nuevoHorarioEntradaStr)) {
                 std::cout << "Formato de hora incorrecto. Use HH:MM: ";
-                std::getline(std::cin, Horario_EntradaStr);
+                std::getline(std::cin, nuevoHorarioEntradaStr);
             }
             try {
                 std::tm tmEntrada = {};
-                std::istringstream entradaStream(Horario_EntradaStr);
+                std::istringstream entradaStream(nuevoHorarioEntradaStr);
                 entradaStream >> std::get_time(&tmEntrada, format);
                 if (entradaStream.fail()) {
                     throw std::runtime_error("Error formato de hora no válido");
                 }
                 doctor.Horario_Entrada = std::chrono::system_clock::from_time_t(std::mktime(&tmEntrada));
                 break;
-            } catch (const std::exception& e) {
+            } catch (const std::exception &e) {
                 std::cerr << "Error: " << e.what() << std::endl;
             }
         } while (true);
 
-        // Solicitar y validar el nuevo horario de salida del doctor
-        std::string Horario_SalidaStr;
+        // Editar el horario de salida del doctor
+        std::string nuevoHorarioSalidaStr;
         do {
-            std::cout << "Ingrese el nuevo horario de Salida del doctor (HH:MM): ";
-            std::getline(std::cin, Horario_SalidaStr);
-            while (!ValidarFechaHora(Horario_SalidaStr, format)) {
+            std::cout << "Ingrese el nuevo horario de salida del doctor (HH:MM): ";
+            std::cin.ignore();
+            std::getline(std::cin, nuevoHorarioSalidaStr);
+            while (!ValidarHora(nuevoHorarioSalidaStr)) {
                 std::cout << "Formato de hora incorrecto. Use HH:MM: ";
-                std::getline(std::cin, Horario_SalidaStr);
+                std::getline(std::cin, nuevoHorarioSalidaStr);
             }
             try {
                 std::tm tmSalida = {};
-                std::istringstream SalidaStream(Horario_SalidaStr);
-                SalidaStream >> std::get_time(&tmSalida, format);
-                if (SalidaStream.fail()) {
+                std::istringstream salidaStream(nuevoHorarioSalidaStr);
+                salidaStream >> std::get_time(&tmSalida, format);
+                if (salidaStream.fail()) {
                     throw std::runtime_error("Error formato de hora no válido");
                 }
                 doctor.Horario_Salida = std::chrono::system_clock::from_time_t(std::mktime(&tmSalida));
                 break;
-            } catch (const std::exception& e) {
+            } catch (const std::exception &e) {
                 std::cerr << "Error: " << e.what() << std::endl;
             }
         } while (true);
 
-        std::cout << "Doctor editado correctamente." << std::endl;
+        std::cout << "Doctor editado exitosamente." << std::endl;
     } else {
         std::cout << "Doctor no encontrado. No se puede editar." << std::endl;
     }
