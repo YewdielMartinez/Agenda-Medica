@@ -56,7 +56,7 @@ void MenuPrincipalConsultorios(){
             case 5:MostrarConsultorios();break;
             case 6:MenuPrincipal();break;
             case 7: std::cout << "Saliendo del programa. ¡Hasta luego!" << std::endl; 
-            return ;
+            cerrarPrograma();
             break;
         
             default: std:: cout <<"Elige una opcion del 1 al 7";break;

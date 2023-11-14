@@ -204,9 +204,24 @@ void EditarPacientes() {
     std::cout << "Ingrese el nuevo número de teléfono del paciente: ";
     it->Numero_TelefonicoPacientes = pedirNumeroTelefono();
 
-    std::cout << "Ingrese la nueva dirección del paciente: ";
-    std::getline(std::cin, it->Direccion_Pacientes);
-    std::cin.ignore();
+    do
+    {
+        std::cout << "Ingrese la direccion del paciente: "<<std::endl;
+        std::getline(std::cin, it->Direccion_Pacientes);
+        std::cin.ignore();
+        
+        
+        if (tieneEspaciosVacios(it->Direccion_Pacientes)) {
+            std::cout << "La cadena no debe contener espacios vacíos.Intenta de nuevo" << std::endl;
+
+        } 
+        while(it->Direccion_Pacientes.empty()){
+            std::cout << "No puede dejar el espacio vacio"<<std::endl;
+            std::getline(std::cin, it->Direccion_Pacientes);
+            
+        }
+    }while(tieneEspaciosVacios(it->Direccion_Pacientes));
+    std::cout << "La direccion se agrego correctamente." << std::endl;
 
     std::cout << "Información del paciente actualizada correctamente." << std::endl;
 
