@@ -122,8 +122,6 @@ void AgregarCita() {
 
     if (itDoctor == agendadoctores.end()) {
         std::cout << "Doctor no encontrado. La cita no puede ser programada." << std::endl;
-        
-        std::cout << "Doctor no encontrado. La cita no puede ser programada." << std::endl;
         MenuPrincipalCitas();
     }
 
