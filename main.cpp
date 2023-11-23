@@ -17,9 +17,9 @@
 #include "Declaraciones.h"
 #include "Consultorios.h"
 #include "Validaciones.h"
-
+#include "Funcionesarchivos.h"
 void MenuPrincipal();
-
+void CargarDoctores();
 
 
 

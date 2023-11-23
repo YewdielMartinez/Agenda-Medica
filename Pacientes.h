@@ -19,7 +19,7 @@
 #include "Declaraciones.h"
 #include "Consultorios.h"
 #include "Validaciones.h"
-
+#include "Funcionesarchivos.h"
 
 //Declaracion de funciones de pacientes
 void RegistrarPaciente();
@@ -27,7 +27,8 @@ void MostrarPacientes();
 void EliminarPacientes();
 void EditarPacientes();
 void MenuPrincipalPacientes();
-
+void GuardarPacientes();
+void CargarPacientes();
 void MenuPrincipalPacientes(){
         int opcion {0};//Declaramos una variable local para el MenuPrincipalPacientes
         std::cout << "=== Gestión de Pacientes ===" << std::endl;
@@ -60,13 +61,15 @@ void MenuPrincipalPacientes(){
 
 
 void RegistrarPaciente() {
+      
+
     Pacientes paciente;
     std::cout << "Ingrese el número de identificación del paciente: ";
     int nuevoId = pedirNumero(); // Pedir el número de identificación
 
     // Verificar si el número de identificación ya está en uso
     auto it = std::find_if(agendapacientes.begin(), agendapacientes.end(),
-                           [nuevoId](const Pacientes& p) { return p.Identificacion_Paciente == nuevoId; });
+                           [nuevoId](const Pacientes &p) { return p.Identificacion_Paciente == nuevoId; });
 
     if (it != agendapacientes.end()) {
         std::cout << "Error: El número de identificación ya está en uso. Intente con otro número." << std::endl;
@@ -74,56 +77,47 @@ void RegistrarPaciente() {
     }
 
     paciente.Identificacion_Paciente = nuevoId;
-    do
-    {
-        std::cout << "Ingrese el nombre del paciente: "<<std::endl;
-    
+    do {
+        std::cout << "Ingrese el nombre del paciente: " << std::endl;
+
         std::cin.ignore();
-        paciente.Nombre_Pacientes = ValidarPalabra("Por Favor Ingresar el nombre");//Aqui validamos que el nombre del doctor sea palabra y no ponga numero
-        
+        paciente.Nombre_Pacientes = ValidarPalabra("Por Favor Ingresar el nombre");
+
         if (tieneEspaciosVacios(paciente.Nombre_Pacientes)) {
             std::cout << "La cadena no debe contener espacios vacíos.Intenta de nuevo" << std::endl;
+        } while (paciente.Nombre_Pacientes.empty()) {
+            std::cout << "No puede dejar el espacio vacío" << std::endl;
 
-        } 
-        while(paciente.Nombre_Pacientes.empty()){
-            std::cout << "No puede dejar el espacio vacio"<<std::endl;
-            
             paciente.Nombre_Pacientes = ValidarPalabra("Volver a ingresar");
         }
-    }while(tieneEspaciosVacios(paciente.Nombre_Pacientes));
-    std::cout << "El Nombre se agrego correctamente." << std::endl;
+    } while (tieneEspaciosVacios(paciente.Nombre_Pacientes));
+    std::cout << "El Nombre se agregó correctamente." << std::endl;
 
     std::cout << "Ingrese la edad del paciente: ";
     paciente.Edad_Pacientes = pedirNumero(); // Aquí puedes usar tu función pedirNumero para validar la entrada.
 
-        std::cout << "Ingrese el número de teléfono del paciente: ";
+    std::cout << "Ingrese el número de teléfono del paciente: ";
 
-        // Cambio: Se utiliza pedirNumeroTelefono() para validar el número de teléfono
-        paciente.Numero_TelefonicoPacientes = pedirNumeroTelefono();
+    // Cambio: Se utiliza pedirNumeroTelefono() para validar el número de teléfono
+    paciente.Numero_TelefonicoPacientes = pedirNumeroTelefono();
 
-
-
-    do
-    {
-        std::cout << "Ingrese la direccion del paciente: "<<std::endl;
+    do {
+        std::cout << "Ingrese la dirección del paciente: " << std::endl;
         std::getline(std::cin, paciente.Direccion_Pacientes);
         std::cin.ignore();
-        
-        
+
         if (tieneEspaciosVacios(paciente.Direccion_Pacientes)) {
-            std::cout << "La cadena no debe contener espacios vacíos.Intenta de nuevo" << std::endl;
-
-        } 
-        while(paciente.Direccion_Pacientes.empty()){
-            std::cout << "No puede dejar el espacio vacio"<<std::endl;
+            std::cout << "La cadena no debe contener espacios vacíos. Intente de nuevo" << std::endl;
+        } while (paciente.Direccion_Pacientes.empty()) {
+            std::cout << "No puede dejar el espacio vacío" << std::endl;
             std::getline(std::cin, paciente.Direccion_Pacientes);
-            
         }
-    }while(tieneEspaciosVacios(paciente.Direccion_Pacientes));
-    std::cout << "La direccion se agrego correctamente." << std::endl;
-
+    } while (tieneEspaciosVacios(paciente.Direccion_Pacientes));
+    std::cout << "La dirección se agregó correctamente." << std::endl;
 
     agendapacientes.push_back(paciente);
+
+    GuardarPacientes();  // Guardar pacientes después de realizar operaciones
 
     std::cout << "Paciente registrado exitosamente." << std::endl;
 
@@ -133,12 +127,14 @@ void RegistrarPaciente() {
         RegistrarPaciente();
     }
 }
-void MostrarPacientes(){
-if (agendapacientes.empty()) {
+void MostrarPacientes() {
+    CargarPacientes(); // Cargar pacientes antes de mostrarlos
+
+    if (agendapacientes.empty()) {
         std::cout << "No hay pacientes registrados." << std::endl;
     } else {
         std::cout << "Lista de Pacientes Registrados:" << std::endl;
-        for (const auto& paciente : agendapacientes) {
+        for (const auto &paciente : agendapacientes) {
             std::cout << "Identificación: " << paciente.Identificacion_Paciente << std::endl;
             std::cout << "Nombre: " << paciente.Nombre_Pacientes << std::endl;
             std::cout << "Edad: " << paciente.Edad_Pacientes << std::endl;
@@ -147,6 +143,9 @@ if (agendapacientes.empty()) {
             std::cout << "-----------------------------" << std::endl;
         }
     }
+
+    GuardarPacientes(); // Guardar pacientes después de mostrarlos
+
     if (validarRespuesta()) {
         MenuPrincipalPacientes();
     } else {
@@ -154,6 +153,7 @@ if (agendapacientes.empty()) {
     }
 }
 void EditarPacientes() {
+    CargarPacientes();
     if (agendapacientes.empty()) {
         std::cout << "No hay pacientes registrados para editar." << std::endl;
         return;
@@ -224,7 +224,7 @@ void EditarPacientes() {
     std::cout << "La direccion se agrego correctamente." << std::endl;
 
     std::cout << "Información del paciente actualizada correctamente." << std::endl;
-
+    GuardarPacientes();
     if (validarRespuesta()) {
         MenuPrincipalPacientes();
     } else {
@@ -232,6 +232,8 @@ void EditarPacientes() {
     }
 }
 void EliminarPacientes() {
+    CargarPacientes(); // Cargar pacientes antes de eliminar
+
     std::cout << "Ingrese el número de identificación del paciente que desea eliminar: ";
     int id = pedirNumero();
     auto it = std::remove_if(agendapacientes.begin(), agendapacientes.end(),
@@ -244,13 +246,14 @@ void EliminarPacientes() {
         std::cout << "Paciente no encontrado. Intente de nuevo." << std::endl;
     }
 
+    GuardarPacientes(); // Guardar pacientes después de eliminar
+
     if (validarRespuesta()) {
         MenuPrincipalPacientes();
     } else {
         EliminarPacientes();
     }
 }
-
 
 
 

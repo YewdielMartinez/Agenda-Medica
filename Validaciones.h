@@ -20,7 +20,7 @@
 #include "Declaraciones.h"
 #include "Consultorios.h"
 #include "Validaciones.h"
-
+#include "Funcionesarchivos.h"
 double pedirNumeroM();
 double pedirNumero();
 double pedirNumeroMC();

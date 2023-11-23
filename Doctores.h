@@ -18,8 +18,11 @@
 #include "Citas.h"
 #include "Declaraciones.h"
 #include "Validaciones.h"
-
-
+#include "Funcionesarchivos.h"
+void GuardarDoctores();
+void CargarDoctores();
+void GuardarConsultorios();
+void CargarConsultorios();
 
 void MenuPrincipalDoctores(){
         int opcion {0};//Declaramos una variable local para el MenuPrincipalDoctores
@@ -167,6 +170,7 @@ void RegistrarDoctor()
             std::cerr << "Error: "<< e.what() << std::endl;
         }
     } while(true);     
+    GuardarDoctores();
     agendadoctores.push_back(doctorr);
 
         std::cout << "Doctor registrado exitosamente." << std::endl;
@@ -184,6 +188,7 @@ if (validarRespuesta()){
 
 
 void MostrarDoctores() {
+    CargarDoctores();
     if (agendadoctores.empty()) {
         std::cout << "No hay doctores registrados." << std::endl;
         MenuPrincipalDoctores();
@@ -223,6 +228,7 @@ void MostrarDoctores() {
 
 
 void EliminarDoctor(){
+    CargarDoctores();
     if (agendadoctores.empty()) {
         std::cout << "No hay doctores registrados para eliminar." << std::endl;
         MenuPrincipalDoctores();
@@ -262,7 +268,7 @@ void EliminarDoctor(){
     }
          // Eliminar los días de trabajo del doctor eliminado
         dias_trabajo = std::vector<bool>(dias_semana.size(), false);
-
+        GuardarDoctores();
     if (validarRespuesta()) {
         MenuPrincipalDoctores();
     } else {
@@ -270,6 +276,7 @@ void EliminarDoctor(){
     }
 }
 void EditarDoctor() {
+    CargarDoctores();
     if (agendadoctores.empty()) {
         std::cout << "No hay doctores registrados para editar." << std::endl;
         MenuPrincipalDoctores();
@@ -402,7 +409,7 @@ void EditarDoctor() {
     } else {
         std::cout << "Doctor no encontrado. No se puede editar." << std::endl;
     }
-
+    GuardarDoctores();
     if (validarRespuesta()) {
         MenuPrincipalDoctores();
     } else {
@@ -410,6 +417,8 @@ void EditarDoctor() {
     }
 }
 void AsignarConsultorios() {
+    CargarDoctores();
+    CargarConsultorios();
     if (agendaconsultorios.empty() || agendadoctores.empty()) {
         std::cout << "No hay consultorios o doctores registrados para asignar." << std::endl;
         MenuPrincipalConsultorios();
@@ -441,7 +450,8 @@ void AsignarConsultorios() {
     // Asignar el consultorio al doctor seleccionado
     agendadoctores[indiceDoctor - 1].NumeroConsultorio = agendaconsultorios[indiceConsultorio - 1].NumeroConsultorio;
     std::cout << "Doctor asignado al consultorio correctamente." << std::endl;
-
+    GuardarDoctores();
+    GuardarConsultorios(); 
     if (validarRespuesta()) {
         MenuPrincipalConsultorios();
     } else {

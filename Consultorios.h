@@ -18,7 +18,7 @@
 #include "Citas.h"
 #include "Declaraciones.h"
 #include "Validaciones.h"
-
+#include "Funcionesarchivos.h"
 void MenuPrincipalConsultorios();
 void RegistrarConsultorios();
 void MenuPrincipal();
@@ -26,6 +26,8 @@ void EditarConsultorios();
 void EliminarConsultorios();
 void MostrarConsultorios();
 void AsignarConsultorios();
+void CargarConsultorios();
+void GuardarConsultorios();
 struct Consultorio {
     int NumeroConsultorio;
     
@@ -70,6 +72,8 @@ std::vector<Consultorio> agendaconsultorios;
 
 
 void RegistrarConsultorios() {
+    CargarConsultorios();  // Cargar consultorios existentes
+
     Consultorio consultorio;
     std::cout << "Ingrese el número del consultorio: ";
     consultorio.NumeroConsultorio = pedirNumeroM();
@@ -88,6 +92,9 @@ void RegistrarConsultorios() {
     agendaconsultorios.push_back(consultorio);
     std::cout << "Consultorio registrado correctamente." << std::endl;
 
+    // Guardar los consultorios actualizados
+    GuardarConsultorios();
+
     if (validarRespuesta()) {
         MenuPrincipalConsultorios();
     } else {
@@ -96,8 +103,9 @@ void RegistrarConsultorios() {
 }
 
 
-
 void EditarConsultorios() {
+    CargarConsultorios();  // Cargar consultorios existentes
+
     int numeroConsultorio;
     std::cout << "Ingrese el número del consultorio que desea editar: ";
     numeroConsultorio = pedirNumeroM();
@@ -110,6 +118,9 @@ void EditarConsultorios() {
     if (it != agendaconsultorios.end()) {
         // Puedes editar otros campos si es necesario
         std::cout << "Consultorio editado correctamente." << std::endl;
+
+        // Guardar los consultorios actualizados
+        GuardarConsultorios();
     } else {
         std::cout << "Consultorio no encontrado. No se puede editar." << std::endl;
     }
@@ -122,6 +133,8 @@ void EditarConsultorios() {
 }
 
 void EliminarConsultorios() {
+    CargarConsultorios();  // Cargar consultorios existentes
+
     int numeroConsultorio;
     std::cout << "Ingrese el número del consultorio que desea eliminar: ";
     numeroConsultorio = pedirNumeroM();
@@ -134,6 +147,9 @@ void EliminarConsultorios() {
     if (it != agendaconsultorios.end()) {
         agendaconsultorios.erase(it);
         std::cout << "Consultorio eliminado correctamente." << std::endl;
+
+        // Guardar los consultorios actualizados
+        GuardarConsultorios();
     } else {
         std::cout << "Consultorio no encontrado. No se puede eliminar." << std::endl;
     }
@@ -146,6 +162,8 @@ void EliminarConsultorios() {
 }
 
 void MostrarConsultorios() {
+    CargarConsultorios();  // Cargar consultorios existentes
+
     if (agendaconsultorios.empty()) {
         std::cout << "No hay consultorios registrados." << std::endl;
         MenuPrincipalConsultorios();
@@ -156,6 +174,12 @@ void MostrarConsultorios() {
             std::cout << "------------------------------------" << std::endl;
         }
         MenuPrincipalConsultorios();
+    }
+
+    if (validarRespuesta()) {
+        MenuPrincipalConsultorios();
+    } else {
+        MostrarConsultorios();
     }
 }
 

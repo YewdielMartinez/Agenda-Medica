@@ -19,6 +19,7 @@
 #include "Declaraciones.h"
 #include "Consultorios.h"
 #include "Validaciones.h"
+#include "Funcionesarchivos.h"
 std::vector<std::string> dias_semana = {"Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"};
 std::vector<bool> dias_trabajo(7, false);
 struct Doctor {

@@ -19,7 +19,7 @@
 #include "Declaraciones.h"
 #include "Consultorios.h"
 #include "Validaciones.h"
-
+#include "Funcionesarchivos.h"
 //Definicion de funciones 
 void MostrarDoctoresDisponibles();
 void MostrarPacientesDisponibles();
@@ -31,7 +31,12 @@ void EliminarCita();
 void MostrarCitas();
 void MostrarCitasMasCercanas();
 void MenuPrincipal();
+void CargarDoctores();
+void CargarPacientes();
+void CargarCitas();
+void GuardarCitas();
 void MostrarDoctoresDisponibles() {//Funcion para mostrar los doctores disponibles
+    CargarDoctores();
     std::cout << "=== Lista de Doctores Disponibles ===" << std::endl;
     for (const auto& doctor : agendadoctores) {
         std::cout << "Nombre: " << doctor.Nombre_Doctor << std::endl;
@@ -41,6 +46,7 @@ void MostrarDoctoresDisponibles() {//Funcion para mostrar los doctores disponibl
 }
 
 void MostrarPacientesDisponibles() {//Funcion para mostrar los pacientes disponibles
+    CargarPacientes();
     std::cout << "=== Lista de Pacientes Disponibles ===" << std::endl;
     for (const auto& paciente : agendapacientes) {
         std::cout << "Nombre: " << paciente.Nombre_Pacientes << std::endl;
@@ -196,6 +202,7 @@ void AgregarCita() {
             return;
         }
     }
+    GuardarCitas();
     // Agregar la cita al vector de citas
     agendacitas.push_back(nuevaCita);
     std::cout << "Cita programada exitosamente." << std::endl;
@@ -204,6 +211,7 @@ void AgregarCita() {
 
 }
 void EditarCita() {
+    CargarCitas();
     if (agendacitas.empty()) {
         std::cout << "No hay citas registradas para editar." << std::endl;
         return;
@@ -255,18 +263,19 @@ void EditarCita() {
         } while (true);
         
         std::cout << "Cita editada correctamente." << std::endl;
+
+        // Guardar las citas actualizadas
+        GuardarCitas();
         MenuPrincipalCitas();
     } else {
         std::cout << "Cita no encontrada. No se puede editar." << std::endl;
         MenuPrincipalCitas();
-    
     }
-
-
 }
 
 
 void EliminarCita() {
+    CargarCitas();
     if (agendacitas.empty()) {
         std::cout << "No hay citas registradas para eliminar." << std::endl;
         return;
@@ -292,15 +301,17 @@ void EliminarCita() {
 
     if (itCita != agendacitas.end()) {
         agendacitas.erase(itCita);
+
         std::cout << "Cita eliminada correctamente." << std::endl;
     } else {
         std::cout << "Cita no encontrada. No se puede eliminar." << std::endl;
     }
-
+    GuardarCitas();
 }
 
 
 void MostrarCitas() {
+    CargarCitas();
     if (agendacitas.empty()) {
         std::cout << "No hay citas registradas." << std::endl;
         return;
@@ -318,6 +329,7 @@ void MostrarCitas() {
 }
 
 void MostrarCitasMasCercanas() {
+    CargarCitas();
     if (agendacitas.empty()) {
         std::cout << "No hay citas registradas." << std::endl;
         return;
